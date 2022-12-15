@@ -14,6 +14,12 @@ import torch.optim as optim
 from torch.distributions.categorical import Categorical
 from torch.utils.tensorboard import SummaryWriter
 
+from gym.envs.registration import register
+
+register(
+    'MoveEnv-v0',
+    entry_point='move_to_target:MoveEnv'
+)
 
 def parse_args():
     # fmt: off
@@ -80,6 +86,7 @@ def parse_args():
 def make_env(env_id, seed, idx, capture_video, run_name):
     def thunk():
         env = gym.make(env_id)
+
         env = gym.wrappers.RecordEpisodeStatistics(env)
         if capture_video:
             if idx == 0:
